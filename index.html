@@ -39,7 +39,6 @@
                 setGlobalTheme(prev => prev === 'light' ? 'dark' : 'light');
             };
 
-            // Aplica estilos al body
             React.useEffect(() => {
                 document.body.style.backgroundColor = globalTheme === 'light' ? 'white' : '#333';
                 document.body.style.color = globalTheme === 'light' ? 'black' : 'white';
@@ -78,7 +77,7 @@
 
             return (
                 <div className="cajita" style={boxStyle}>
-                    <h3>Soy la cajita 🎁</h3>
+                    <h3>Soy la cajita</h3>
                     <p>Tema actual: {boxTheme.toUpperCase()}</p>
                 </div>
             );
@@ -92,11 +91,11 @@
             return (
                 <div>
                     <button onClick={toggleGlobal}>
-                        Cambiar TODO 🌍
+                        Cambiar TODO
                     </button>
                     
                     <button onClick={toggleBox}>
-                        Cambiar SOLO CAJITA 📦
+                        Cambiar SOLO CAJITA
                     </button>
                 </div>
             );
@@ -111,8 +110,8 @@
                         <Controls />
                         <Cajita />
                         
-                        <p>El botón global cambia FONDO y TEXTO de toda la página</p>
-                        <p>El botón de cajita solo cambia su FONDO y BORDES</p>
+                        <p>El boton global cambia FONDO y TEXTO de toda la pagina</p>
+                        <p>El boton de cajita solo cambia su FONDO y BORDES</p>
                     </BoxThemeProvider>
                 </GlobalThemeProvider>
             );
