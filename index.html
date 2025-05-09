@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tema Global vs Cajita</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+        .cajita {
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border: 2px solid #ccc;
+            transition: all 0.3s;
+        }
+        button { margin-right: 10px; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // Contexto para tema GLOBAL
+        const GlobalThemeContext = React.createContext();
+        
+        // Contexto para tema CAJITA
+        const BoxThemeContext = React.createContext();
+
+        // Proveedor Global
+        function GlobalThemeProvider({ children }) {
+            const [globalTheme, setGlobalTheme] = React.useState('light');
+            
+            const toggleGlobal = () => {
+                setGlobalTheme(prev => prev === 'light' ? 'dark' : 'light');
+            };
+
+            // Aplica estilos al body
+            React.useEffect(() => {
+                document.body.style.backgroundColor = globalTheme === 'light' ? 'white' : '#333';
+                document.body.style.color = globalTheme === 'light' ? 'black' : 'white';
+            }, [globalTheme]);
+
+            return (
+                <GlobalThemeContext.Provider value={{ globalTheme, toggleGlobal }}>
+                    {children}
+                </GlobalThemeContext.Provider>
+            );
+        }
+
+        // Proveedor Cajita
+        function BoxThemeProvider({ children }) {
+            const [boxTheme, setBoxTheme] = React.useState('light');
+            
+            const toggleBox = () => {
+                setBoxTheme(prev => prev === 'light' ? 'dark' : 'light');
+            };
+
+            return (
+                <BoxThemeContext.Provider value={{ boxTheme, toggleBox }}>
+                    {children}
+                </BoxThemeContext.Provider>
+            );
+        }
+
+        // Componente Cajita
+        function Cajita() {
+            const { boxTheme } = React.useContext(BoxThemeContext);
+            
+            const boxStyle = {
+                backgroundColor: boxTheme === 'light' ? '#f0f0f0' : '#1a1a1a',
+                borderColor: boxTheme === 'light' ? '#ccc' : '#666'
+            };
+
+            return (
+                <div className="cajita" style={boxStyle}>
+                    <h3>Soy la cajita 🎁</h3>
+                    <p>Tema actual: {boxTheme.toUpperCase()}</p>
+                </div>
+            );
+        }
+
+        // Botones de control
+        function Controls() {
+            const { toggleGlobal } = React.useContext(GlobalThemeContext);
+            const { toggleBox } = React.useContext(BoxThemeContext);
+            
+            return (
+                <div>
+                    <button onClick={toggleGlobal}>
+                        Cambiar TODO 🌍
+                    </button>
+                    
+                    <button onClick={toggleBox}>
+                        Cambiar SOLO CAJITA 📦
+                    </button>
+                </div>
+            );
+        }
+
+        // App principal
+        function App() {
+            return (
+                <GlobalThemeProvider>
+                    <BoxThemeProvider>
+                        <h1>Control Independiente de Temas</h1>
+                        <Controls />
+                        <Cajita />
+                        
+                        <p>El botón global cambia FONDO y TEXTO de toda la página</p>
+                        <p>El botón de cajita solo cambia su FONDO y BORDES</p>
+                    </BoxThemeProvider>
+                </GlobalThemeProvider>
+            );
+        }
+
+        // Render
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
